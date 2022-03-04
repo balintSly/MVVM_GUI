@@ -1,0 +1,72 @@
+﻿<Window x:Class="MVVM_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVM_GUI"
+        xmlns:vms="clr-namespace:MVVM_GUI.ViewModels"
+        xmlns:conv="clr-namespace:MVVM_GUI.Converters"
+        mc:Ignorable="d"
+        Title="Army Editor" Height="450" Width="800">
+    <Window.DataContext>
+        <vms:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <conv:NumberToColorConverter x:Key="numtocolor"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0" ItemsSource="{Binding Barrack}" HorizontalContentAlignment="Stretch" SelectedItem="{Binding SelectedFromBarrack}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Content="{Binding Type}" ContentStringFormat="Type: {0}"/>
+                            <Label Grid.Row="1" Grid.Column="0" Content="{Binding Power}" ContentStringFormat="Power: {0}"/>
+                            <Label Grid.Row="1" Grid.Column="1" Content="{Binding Speed}" ContentStringFormat="Speed: {0}"/>
+                            <ProgressBar Grid.Row="2" Grid.Column="0" Height="15" Margin="10" Value="{Binding Power}" Maximum="10" Foreground="{Binding Power, Converter={StaticResource numtocolor}}"/>
+                            <ProgressBar Grid.Row="2" Grid.Column="1" Height="15" Margin="10" Value="{Binding Speed}" Maximum="10" Foreground="{Binding Power, Converter={StaticResource numtocolor}}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Column="1">
+            <Label Content="{Binding AllCost}" HorizontalContentAlignment="Center" ContentStringFormat="Cost: {0}$"/>
+            <Button Content="Add to army" Margin="10" Padding="10" Command="{Binding AddToArmy}"/>
+            <Button Content="Remove from army" Margin="10" Padding="10" Command="{Binding RemoveFromArmy}"/>
+            <Button Content="Edit trooper" Margin="10" Padding="10" Command="{Binding EditTrooper}"/>
+            <Label Content="{Binding AvgPower}" HorizontalContentAlignment="Center" ContentStringFormat="Average power: {0}"/>
+            <ProgressBar Value="{Binding AvgPower, Mode=OneWay}" Height="15" Margin="10 1 10 10" Maximum="10" Foreground="{Binding AvgPower, Converter={StaticResource numtocolor}, Mode=OneWay}"/>
+            <Label Content="{Binding AvgSpeed}" HorizontalContentAlignment="Center" ContentStringFormat="Average speed: {0}"/>
+            <ProgressBar Value="{Binding AvgSpeed, Mode=OneWay}" Height="15" Margin="10 1 10 10" Maximum="10" Foreground="{Binding AvgSpeed, Converter={StaticResource numtocolor}, Mode=OneWay}"/>
+        </StackPanel>
+        <ListBox Grid.Column="2" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Army}" SelectedItem="{Binding SelectedFromArmy}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Black" BorderThickness="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Type}" ContentStringFormat="Type: {0}"/>
+                            <Label Content="{Binding Power}" ContentStringFormat="Power: {0}"/>
+                            <Label Content="{Binding Speed}" ContentStringFormat="Speed: {0}"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate> 
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</Window>
